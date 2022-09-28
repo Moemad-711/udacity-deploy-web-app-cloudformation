@@ -18,5 +18,13 @@
     {
         "ParameterKey":"BastionHostImageId",
         "ParameterValue":"ami-0ee23bfc74a881de5"
+    },
+    {
+        "ParameterKey":"WebAppInstanceType",
+        "ParameterValue":"t3.small"
+    },
+    {
+        "ParameterKey":"BastionHostInstanceType",
+        "ParameterValue":"t3.micro"
     }
 ]
