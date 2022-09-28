@@ -103,7 +103,7 @@ Resources:
           apt-get install apache2 -y
           systemctl start apache2.service
           cd /var/www/html
-          echo "it works! Udagram, Udacity By Moemad" > index.html
+          echo "it works! Udagram, Udacity By Moemad XD" > index.html
       ImageId: !Ref WebAppImageId
       KeyName: !Ref WebAppSSHKeyName
       SecurityGroups:
@@ -113,6 +113,17 @@ Resources:
         - DeviceName: /dev/sdk
           Ebs: 
             VolumeSize: 10
+  
+  WebAppScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      VPCZoneIdentifier:
+        - Fn::ImportValue: !Sub ${EnvironmentName}-PRIV-NETs
+      LaunchConfigurationName: !Ref WebAppLaunchConfig
+      MinSize: 2
+      MaxSize: 4
+      TargetGroupARNs:
+        - !Ref WebAppTargetGroup
 
   BastionHostInstance:
     Type: AWS::EC2::Instance
@@ -121,16 +132,91 @@ Resources:
       InstanceType: t3.micro
       KeyName: !Ref BastionHostSSHKeyName
       SubnetId: 
-        Fn::ImportValue: !Sub ${EnvironmetName}-PUB-SN1
-        SecurityGroups:
+        Fn::ImportValue: !Sub ${EnvironmentName}-PUB-SN1
+      SecurityGroups:
           - !Ref BastionHostSecurityGroup
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Bastion Host
+          Value: !Sub ${EnvironmentName} Bastion Host(Jumpbox)
+  
+  WebAppLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Subnets:
+        - Fn::ImportValue: !Sub ${EnvironmentName}-PUB-SN1
+        - Fn::ImportValue: !Sub ${EnvironmentName}-PUB-SN2
+      SecurityGroups:
+        - !Ref LoadBalancerSecurityGroup
+  
+  LoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref WebAppTargetGroup
+      LoadBalancerArn: !Ref WebAppLoadBalancer
+      Port: 80
+      Protocol: HTTP
+  
+  LoadBalancerListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties: 
+      Actions:
+        - Type: forward
+          TargetGroupArn: !Ref WebAppTargetGroup
+      Conditions: 
+        - Field: path-pattern
+          Values: [/]
+      ListenerArn: !Ref LoadBalancerListener
+      Priority: 1
+  
+  WebAppTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 10
+      HealthCheckPath: /
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 8
+      HealthyThresholdCount: 2
+      Port: 80
+      Protocol: HTTP
+      UnhealthyThresholdCount: 5
+      VpcId: 
+        Fn::ImportValue: !Sub ${EnvironmentName}-VPCID
 
 Outputs:
   BastionHostPublicIP:
     Description: The Public IP of the Bastion Host(Jumpbox)
     Value: !Sub http://${BastionHostInstance.PublicIp}
     Export:   
-      Name: BastionPublicIP
+      Name: !Sub ${EnvironmentName}-Bastion-PUB-IP
+  
+  WebAppLoadBalancerDNSName:
+    Description: This is the DNS Name of the Web App Load Balancer
+    Value: !Join ["", ["HTTP://",!GetAtt WebAppLoadBalancer.DNSName,"/"]]
+    Export:
+      Name: !Sub ${EnvironmentName}-LB-DNS-NAME
+  
+  WebAppIndexPage:
+    Description: This is the DNS Name of the Web App Load Balancer
+    Value: !Join ["", ["HTTP://",!GetAtt WebAppLoadBalancer.DNSName,"/index.html"]]
+    Export:
+      Name: !Sub ${EnvironmentName}-WEB-APP-INDEX-PAGE
+  
+  WebAppSecurityGroup:
+    Description: This is a reference to the Web Appilication Security Group
+    Value: !Ref WebAppSecurityGroup
+    Export:
+      Name: !Sub ${EnvironmentName}-WEB-APP-SEC-GP
+  
+  LoadBalancerSecurityGroup:
+    Description: This is a reference to the Web Appilication Security Group
+    Value: !Ref LoadBalancerSecurityGroup
+    Export:
+      Name: !Sub ${EnvironmentName}-LB-SEC-GP
+
+  BastionHostSecurityGroup:
+    Description: This is a reference to the Web Appilication Security Group
+    Value: !Ref BastionHostSecurityGroup
+    Export:
+      Name: !Sub ${EnvironmentName}-Bastion-SEC-GP
