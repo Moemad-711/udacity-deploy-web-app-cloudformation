@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+  This the Network Infrastructure Required for the deployment of the high Availability Web App 
+Parameters:
+  EnvironmentName:
+    Description: This is used a prefix for all resources
+    Type: String
+    Default: deploy-web-app-moemad
+  
+  VpcCIDR: 
+    Description: Please enter the IP range (CIDR notation) for this VPC
+    Type: String
+    Default: 15.0.0.0/24
+
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCIDR
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName
+  
+Outputs:
+  VPC:
+    Description: A reference to the VPC we created
+    Value: !Ref VPC
+    Export:
+      Name: !Sub ${EnvironmentName}-VPCID
