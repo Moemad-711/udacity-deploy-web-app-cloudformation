@@ -11,12 +11,12 @@ Parameters:
   
   WebAppSSHKeyName:
     Description: Enter the Name of the SSH Key Name Created to SSH to WebApp Host from Bastion Host
-    Type: String
+    Type: AWS::EC2::KeyPair::KeyName
     Default: UdacityWebAppKey
     
   BastionHostSSHKeyName:
     Description: Enter the name of the SSH Key created to connect with the Bastion Host
-    Type: String
+    Type: AWS::EC2::KeyPair::KeyName
     Default: UdacityBastionHostKey
   
   WebAppImageId:
@@ -113,7 +113,7 @@ Resources:
           apt-get install apache2 -y
           systemctl start apache2.service
           cd /var/www/html
-          echo "it works! Udagram, Udacity" > index.html
+          echo "<h1>it works! Udagram, Udacity</h1>" > index.html
       ImageId: !Ref WebAppImageId
       SecurityGroups:
         - !Ref WebAppSecurityGroup
@@ -199,6 +199,12 @@ Outputs:
     Value: !Sub http://${BastionHostInstance.PublicIp}
     Export:   
       Name: !Sub ${EnvironmentName}-Bastion-PUB-IP
+
+  BastionHostDNS:
+    Description: The Public IP of the Bastion Host(Jumpbox)
+    Value: !GetAtt BastionHostInstance.PublicDnsName
+    Export:   
+      Name: !Sub ${EnvironmentName}-Bastion-PUB-DNS
   
   WebAppDNSURL:
     Description: This is the DNS Name of the Web App Load Balancer
