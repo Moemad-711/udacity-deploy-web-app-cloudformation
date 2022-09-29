@@ -20,16 +20,16 @@ Parameters:
     Default: UdacityBastionHostKey
   
   WebAppImageId:
-    Description: Enter the AMI Image Id of x64 Ubuntu 18.20 for the region you are deploying in
+    Description: Enter the AMI Image Id of x64 Ubuntu Server 18.04 LTS for the region you are deploying in
     Type: AWS::EC2::Image::Id
-    # This the us-east-1 region on the date this template created #
+    # This the us-east-1 region Id on the date this template created #
     Default: ami-0ee23bfc74a881de5 
   
   BastionHostImageId:
     Description: Enter the AMI Image Id of x64 Amazon linux 2 for your region 
     Type: AWS::EC2::Image::Id
-    # This the us-east-1 region on the date this template created #
-    Default: ami-0ee23bfc74a881de5
+    # This the us-east-1 region Id on the date this template created #
+    Default: ami-047a51fa27710816e
   
   WebAppInstanceType:
     Description: Enter the instance type for the Web App Servers
@@ -128,7 +128,7 @@ Resources:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       VPCZoneIdentifier:
-        - Fn::ImportValue: !Sub ${EnvironmentName}-PRIV-NETs
+        - Fn::ImportValue: !Sub ${EnvironmentName}-PRI-NETs
       LaunchConfigurationName: !Ref WebAppLaunchConfig
       MinSize: 2
       MaxSize: 4

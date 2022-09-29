@@ -17,7 +17,7 @@
     },
     {
         "ParameterKey":"BastionHostImageId",
-        "ParameterValue":"ami-0ee23bfc74a881de5"
+        "ParameterValue":"ami-026b57f3c383c2eec"
     },
     {
         "ParameterKey":"WebAppInstanceType",
