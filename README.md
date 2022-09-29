@@ -28,7 +28,8 @@ ssh ec2-user@<Bastion Host Public IP> -i <BastionHostSSHKeyPemFile>
 ```
   or Use [Secure Shell Extension](https://chrome.google.com/webstore/detail/secure-shell/iodihamcpbpeioajjeobimgagajmlibd) of google chrome
   
-- From Whithin the Bastion Host run the following command:
+- From Whithin the Bastion Host run the following commandw:
 ```console 
-ssh ubuntu@<Web App Private IP> -i <BastionHostSSHKeyPemFile>
+chmod 400 <WebAppSSHKeyPemFile>
+ssh ubuntu@<Web App Private IP> -i <WebAppSSHKeyPemFile>
 ```
