@@ -113,9 +113,8 @@ Resources:
           apt-get install apache2 -y
           systemctl start apache2.service
           cd /var/www/html
-          echo "it works! Udagram, Udacity By Moemad XD" > index.html
+          echo "it works! Udagram, Udacity" > index.html
       ImageId: !Ref WebAppImageId
-      KeyName: !Ref WebAppSSHKeyName
       SecurityGroups:
         - !Ref WebAppSecurityGroup
       InstanceType: !Ref WebAppInstanceType
