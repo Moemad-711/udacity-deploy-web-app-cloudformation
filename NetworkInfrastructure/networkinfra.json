@@ -5,7 +5,7 @@
     },
     {
         "ParameterKey": "VpcCIDR",
-        "ParameterValue": "15.0.0.0/24"
+        "ParameterValue": "15.0.0.0/16"
     },
     {
         "ParameterKey":"PublicSubnet1CIDR",

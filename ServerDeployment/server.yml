@@ -42,11 +42,11 @@ Parameters:
     Default: t3.micro
 
 Resources:
-  ProfileWithRoleForOurApp:
-    Type: AWS::IAM::InstanceProfile
-    Properties:
-      Roles:
-        - UdacityS3ReadOnlyEC2
+  # ProfileWithRoleForOurApp:
+  #   Type: AWS::IAM::InstanceProfile
+  #   Properties:
+  #     Roles:
+  #       - UdacityS3ReadOnlyEC2
   
   WebAppSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -128,7 +128,7 @@ Resources:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       VPCZoneIdentifier:
-        - Fn::ImportValue: !Sub ${EnvironmentName}-PRI-NETs
+        - Fn::ImportValue: !Sub ${EnvironmentName}-PRI-NETS
       LaunchConfigurationName: !Ref WebAppLaunchConfig
       MinSize: 2
       MaxSize: 4
@@ -143,7 +143,7 @@ Resources:
       KeyName: !Ref BastionHostSSHKeyName
       SubnetId: 
         Fn::ImportValue: !Sub ${EnvironmentName}-PUB-SN1
-      SecurityGroups:
+      SecurityGroupIds:
           - !Ref BastionHostSecurityGroup
       Tags:
         - Key: Name
