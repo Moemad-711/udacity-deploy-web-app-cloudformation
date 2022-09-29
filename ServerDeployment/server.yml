@@ -201,18 +201,13 @@ Outputs:
     Export:   
       Name: !Sub ${EnvironmentName}-Bastion-PUB-IP
   
-  WebAppLoadBalancerDNSName:
+  WebAppDNSURL:
     Description: This is the DNS Name of the Web App Load Balancer
-    Value: !Join ["", ["HTTP://",!GetAtt WebAppLoadBalancer.DNSName,"/"]]
+    Value: !Join ["", ["HTTP://",!GetAtt WebAppLoadBalancer.DNSName]]
     Export:
       Name: !Sub ${EnvironmentName}-LB-DNS-NAME
   
-  WebAppIndexPage:
-    Description: This is the DNS Name of the Web App Load Balancer
-    Value: !Join ["", ["HTTP://",!GetAtt WebAppLoadBalancer.DNSName,"/index.html"]]
-    Export:
-      Name: !Sub ${EnvironmentName}-WEB-APP-INDEX-PAGE
-  
+
   WebAppSecurityGroup:
     Description: This is a reference to the Web Appilication Security Group
     Value: !Ref WebAppSecurityGroup
