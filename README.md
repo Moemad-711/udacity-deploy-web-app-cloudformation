@@ -7,13 +7,13 @@ This is a repo for a project in the Cloud DevOps Nanodegree that includes templa
 ## Steps to deploy
 - Create the Network Infrastructure Using the following CLI command: 
 ```console 
-aws cloudformation Create-stack --stack-name <Stack Name> --template-body file://./NetworkInfrastructure/networkinfra.yml --parameters file://./NetworkInfrastructure/networkinfra.json  --region=<Region Name>
+aws cloudformation create-stack --stack-name <Stack Name> --template-body file://./NetworkInfrastructure/networkinfra.yml --parameters file://./NetworkInfrastructure/networkinfra.json  --region=<Region Name>
 ```
 - Wait until the stack is created successfully
 
 - Create the Network Infrastructure Using the following CLI command: 
 ```console 
-aws cloudformation Create-stack --stack-name <Stack Name> --template-body file://./ServerDeployment/server.yml --parameters file://./ServerDeployment/server.json  --region=<Region Name>
+aws cloudformation create-stack --stack-name <Stack Name> --template-body file://./ServerDeployment/server.yml --parameters file://./ServerDeployment/server.json  --region=<Region Name>
 ```
 - wait until the stack is created successfully
 
