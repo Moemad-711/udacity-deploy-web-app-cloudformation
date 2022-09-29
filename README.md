@@ -17,7 +17,7 @@ aws cloudformation Create-stack --stack-name <Stack Name> --template-body file:/
 ```
 - wait until the stack is created successfully
 
-## Steps to SSH into the Web APP Host
+## Steps to SSH into the Web APP Host Using a Bastion Host
 - Copy the Web App SSH Key Pem File to the Bastion Host Using the following command: 
 ```console 
 scp -i <BastionHostSSHKeyPemFile> <WebAppSSHKeyPemFile> ec2-user@<BastionHostIP>:/home/ec2-user/<WebAppSSHKeyPemFile>
