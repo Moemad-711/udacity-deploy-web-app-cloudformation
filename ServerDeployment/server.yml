@@ -9,10 +9,10 @@ Parameters:
     Type: String
     Default: deploy-web-app-moemad
   
-  # WebAppSSHKeyName:
-  #   Description: Enter the Name of the SSH Key Name Created to SSH to WebApp Host from Bastion Host
-  #   Type: AWS::EC2::KeyPair::KeyName
-  #   Default: UdacityWebAppKey
+  WebAppSSHKeyName:
+    Description: Enter the Name of the SSH Key Name Created to SSH to WebApp Host from Bastion Host
+    Type: AWS::EC2::KeyPair::KeyName
+    Default: UdacityWebAppKey
     
   BastionHostSSHKeyName:
     Description: Enter the name of the SSH Key created to connect with the Bastion Host
